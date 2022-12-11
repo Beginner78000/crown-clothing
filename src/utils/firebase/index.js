@@ -6,7 +6,8 @@ import {
     getAuth,
     signInWithRedirect,
     signInWithPopup,
-    GoogleAuthProvider
+    GoogleAuthProvider,
+    createUserWithEmailAndPassword,
 } from 'firebase/auth';
 import { 
     getFirestore,
@@ -29,18 +30,24 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 
 // Provider are instruction for differents instances
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 
-provider.setCustomParameters({
+googleProvider.setCustomParameters({
     prompt: "select_account",
 })
 
+// Auth keep track of the authentification of the entire application
+// It keep track of if the user his authenticated or not
 export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
+export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
 
-export const createUserDocumentFromAuth = async (userAuth) => {
+export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {
+    // Si je ne reçois pas l'authentification de l'utilisateur alors je veux sortir
+    if(!userAuth) return;
+
     // On vérifie si le document exist
     const userDocRef = doc(db, 'user', userAuth.uid);
     // console.log(userDocRef);
@@ -54,17 +61,25 @@ export const createUserDocumentFromAuth = async (userAuth) => {
         const createdAt = new Date();
 
         try {
+            // If it doesn't exists, we create the document in the collection
             await setDoc(userDocRef, {
                 displayName,
                 email,
                 createdAt,
+                ...additionalInformation,
             })
         } catch (error) {
             console.log('error creating the user', error.message);
         }
+        // return the data if it does exists
+        return userDocRef;
     }
+};
 
-    // If it doesn't exists, we create the document in the collection
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+    // Si je ne reçois pas l'email, ou le password alors je veux sortir
+    if(!email || !password) return;
 
-    // return the data if it does exists
+    // Sinon je retourne l'utilisateur
+    return await createUserWithEmailAndPassword(auth, email, password);
 }
