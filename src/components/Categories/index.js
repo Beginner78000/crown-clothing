@@ -1,6 +1,6 @@
 import CategoryItem from '../CategoryItem';
 
-// import './style.scss';
+import './style.scss';
 
 function Categories({ categories }) {
     return (
