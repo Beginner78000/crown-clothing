@@ -1,6 +1,6 @@
-import SignInForm from '../SignInForm';
+import SignInForm from '../../SignInForm';
 
-import SignUpForm from '../SignUpForm';
+import SignUpForm from '../../SignUpForm';
 import './style.scss';
 
 function Authentication() {
