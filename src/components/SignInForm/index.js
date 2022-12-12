@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import FormInput from '../FormInput';
 import Button from '../Button';
-import { createAuthUserWithEmailAndPassword, signInAuthUserWithEmailAndPassword, signInWithGooglePopup } from '../../utils/firebase';
+import { signInAuthUserWithEmailAndPassword, signInWithGooglePopup } from '../../utils/firebase';
 
 import './style.scss';
 
@@ -20,8 +20,7 @@ function SignInForm() {
     }
 
     const signInWithGoogle = async () => {
-        const { user } = await signInWithGooglePopup();
-        await createAuthUserWithEmailAndPassword(user);
+        await signInWithGooglePopup();
     }
 
     const handleSubmit = async (event) => {
