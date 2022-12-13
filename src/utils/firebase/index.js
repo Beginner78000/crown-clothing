@@ -17,6 +17,10 @@ import {
     doc,
     getDoc,
     setDoc,
+    collection,
+    writeBatch,
+    query,
+    getDocs,
  } from 'firebase/firestore'
 
 // Your web app's Firebase configuration
@@ -47,6 +51,37 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider)
 export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
+
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = collection(db, collectionKey);
+    const batch = writeBatch(db);
+
+    objectsToAdd.forEach((obj) => {
+        const docRef = doc(collectionRef, obj.title.toLowerCase());
+        batch.set(docRef, obj);
+    });
+
+    await batch.commit();
+    console.log('done');
+};
+
+// Elles isole les zones avec lesquelles notre application s'interface, 
+// Les choses pouvant changer
+export const getCategoriesAndDocuments = async () => {
+    const collectionRef = collection(db, 'categories');
+    const q = query(collectionRef);
+
+    // On récupère les instantanés des documents que nous voulons
+    const querySnapshot = await getDocs(q);
+    // Ça nous donnera un tableau de tous ces documents individuels
+    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+        const { title, items } = docSnapshot.data();
+        acc[title.toLowerCase()] = items;
+        return acc;
+    }, []);
+
+    return categoryMap;
+};
 
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {
     // Si je ne reçois pas l'authentification de l'utilisateur alors je veux sortir
