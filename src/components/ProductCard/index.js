@@ -8,7 +8,7 @@ import {
   Footer,
   Name,
   Price,
-} from './product-card.styles';
+} from './productCard.styles';
 
 function ProductCard({ product }) {
     const { name, price, imageUrl } = product;
