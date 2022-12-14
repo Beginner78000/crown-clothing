@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
 import FormInput from '../FormInput';
-import Button from '../Button';
+import Button, { BUTTON_TYPE_CLASSES } from '../Button';
 import { signInAuthUserWithEmailAndPassword, signInWithGooglePopup } from '../../utils/firebase';
 
-import './style.scss';
+import { SignInContainer, ButtonsContainer } from './signInForm.styles';
 
 const defaultFormFields = {
     email: '',
@@ -49,34 +49,39 @@ function SignInForm() {
         setFormFields({...formFields, [name]: value });
     }
     return (
-        <div className="sign-in-container">
-            <h2>I already have an account ?</h2>
-            <span>Sign in with your email and password</span>
-            <form onSubmit={handleSubmit}>
-                <FormInput
-                    type="email"
-                    name='email'
-                    label='Email'
-                    value={email}
-                    onChange={handleChange}
-                    required
-                />
-                <FormInput
-                    type="password"
-                    name='password'
-                    label='Password'
-                    value={password}
-                    onChange={handleChange}
-                    required
-                />
-                <div className='buttons-container'>
-                    <Button type='submit'>Sign in</Button>
-                    <Button type="button" buttonType='google' onClick={signInWithGoogle}>
-                        Google Sign in
-                    </Button>
-                </div>
-            </form>
-        </div>
+        <SignInContainer>
+      <h2>Already have an account?</h2>
+      <span>Sign in with your email and password</span>
+      <form onSubmit={handleSubmit}>
+        <FormInput
+          label='Email'
+          type='email'
+          required
+          onChange={handleChange}
+          name='email'
+          value={email}
+        />
+
+        <FormInput
+          label='Password'
+          type='password'
+          required
+          onChange={handleChange}
+          name='password'
+          value={password}
+        />
+        <ButtonsContainer>
+          <Button type='submit'>Sign In</Button>
+          <Button
+            buttonType={BUTTON_TYPE_CLASSES.google}
+            type='button'
+            onClick={signInWithGoogle}
+          >
+            Sign In With Google
+          </Button>
+        </ButtonsContainer>
+      </form>
+    </SignInContainer>
     );
 }
 
