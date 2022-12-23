@@ -5,6 +5,7 @@ import Button, { BUTTON_TYPE_CLASSES } from '../Button';
 import { signInAuthUserWithEmailAndPassword, signInWithGooglePopup } from '../../utils/firebase';
 
 import { SignInContainer, ButtonsContainer } from './signInForm.styles';
+import { useNavigate } from 'react-router-dom';
 
 const defaultFormFields = {
     email: '',
@@ -14,6 +15,7 @@ const defaultFormFields = {
 function SignInForm() {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { email, password } = formFields;
+    const navigate = useNavigate();
 
     const resetFormFields = () => {
         setFormFields(defaultFormFields);
@@ -21,6 +23,7 @@ function SignInForm() {
 
     const signInWithGoogle = async () => {
         await signInWithGooglePopup();
+        navigate('/');
     }
 
     const handleSubmit = async (event) => {
@@ -29,6 +32,7 @@ function SignInForm() {
             // if it does then check if the user is authenticated
             await signInAuthUserWithEmailAndPassword(email, password);
             resetFormFields();
+            navigate('/');
 
         }catch(error) {
             switch(error.code) {

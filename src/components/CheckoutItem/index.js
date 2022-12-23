@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-// import { useEffect } from 'react';
 
 import {
     clearItemFromCart,
@@ -23,17 +22,12 @@ function CheckoutItem({ cartItem }) {
     const { name, imageUrl, price, quantity } = cartItem;
     const dispatch = useDispatch();
     const cartItems = useSelector(selectCartItems);
-    // const isCartOpen = useSelector(selectIsCartOpen);
   
     const clearItemHandler = () =>
       dispatch(clearItemFromCart(cartItems, cartItem));
     const addItemHandler = () => dispatch(addItemToCart(cartItems, cartItem));
     const removeItemHandler = () =>
       dispatch(removeItemToCart(cartItems, cartItem));
-
-      // useEffect(() => {
-      //   dispatch(setIsCartOpen(!isCartOpen));
-      // }, []);
 
     return (
         <CheckoutItemContainer>

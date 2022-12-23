@@ -19,7 +19,7 @@ const cartReducer = (state = initialState, action = {}) => {
         case SET_IS_CART_OPEN:
             return {
                 ...state,
-                isCartOpen: true,
+                isCartOpen: action.payload,
             }
         default:
             return state;

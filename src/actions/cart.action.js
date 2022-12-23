@@ -48,7 +48,7 @@ export const setCartItems = (newCartItems) => ({
 
 export const setIsCartOpen = (boolean) => ({
     type: SET_IS_CART_OPEN,
-    isCartOpen: boolean,
+    payload: boolean,
 });
 
 

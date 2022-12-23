@@ -23,7 +23,10 @@ const persistConfig = {
   // Data we don't want to persist in the localStorage
   // User is already persisting with the AuthListener
   // So we want to avoid conflict 
-  blacklist: ['user']
+  // blacklist: ['user']
+  // Il est aussi possible de dire ce qu'on souhaite
+  // qu'il persiste
+  whitelist: ['cart'],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);
