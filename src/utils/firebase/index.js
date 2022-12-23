@@ -74,13 +74,8 @@ export const getCategoriesAndDocuments = async () => {
     // On récupère les instantanés des documents que nous voulons
     const querySnapshot = await getDocs(q);
     // Ça nous donnera un tableau de tous ces documents individuels
-    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-        const { title, items } = docSnapshot.data();
-        acc[title.toLowerCase()] = items;
-        return acc;
-    }, []);
-
-    return categoryMap;
+    return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
+    // console.log('categories ===>>>', categories)
 };
 
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation = {}) => {
