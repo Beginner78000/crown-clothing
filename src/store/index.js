@@ -3,12 +3,15 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import logger from '../middlewares/logger';
-// import auth from 'src/middleware/auth';
+import thunk from 'redux-thunk';
 import reducer from '../reducers';
 
-// Si la fonction existe on viendra connecter le redux devtool
+// Si on n'est pas en production, et si la fonction existe
+// on viendra connecter le redux devtool
 // avec la prise en charge des autres enhancers (ex: middleware, fonctions)
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = (
+  process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+) || compose;
 
 // Redux-persist est un outil qui permet de conserver 
 // les valeurs de notre reducer dans le local storage
@@ -25,11 +28,13 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 
+const middleWares = [process.env.NODE_ENV !== 'production' && logger, thunk].filter(Boolean);
+
 
 export const store = createStore(
   persistedReducer,
   composeEnhancers(
-    applyMiddleware(logger),
+    applyMiddleware(...middleWares),
   ),
 );
 
