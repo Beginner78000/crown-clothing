@@ -6,8 +6,6 @@ import { fetchCategoriesAsync } from '../../../actions/category.action.js';
 import CategoriesPreview from '../../pages/CategoriesPreview';
 import Category from '../../Category';
 
-import './style.scss';
-
 function Shop() {
 
   const dispatch = useDispatch();
