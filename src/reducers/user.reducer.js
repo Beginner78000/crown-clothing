@@ -1,7 +1,9 @@
-import { SET_CURRENT_USER } from "../actions/user.action";
+import { SET_CURRENT_USER, SIGN_OUT, SIGN_OUT_FAILED } from "../actions/user.action";
 
 const initialState = {
   currentUser: null,
+  isLoading: false,
+  error: null,
 };
 
 const userReducer = (state = initialState, action = {}) => {
@@ -11,6 +13,13 @@ const userReducer = (state = initialState, action = {}) => {
         ...state,
         currentUser: action.payload,
       };
+    case SIGN_OUT:
+      return {
+        ...state,
+        currentUser: null,
+      };
+    case SIGN_OUT_FAILED:
+      return { ...state, error: action.error };
     default:
       return state;
   }

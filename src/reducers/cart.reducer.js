@@ -1,6 +1,7 @@
 import {
     SET_CART_ITEMS,
     SET_IS_CART_OPEN,
+    RESET_CART_ITEM,
 } from "../actions/cart.action";
 
 const initialState = {
@@ -21,6 +22,11 @@ const cartReducer = (state = initialState, action = {}) => {
                 ...state,
                 isCartOpen: action.payload,
             }
+        case RESET_CART_ITEM:
+            return {
+                ...state,
+                cartItems: [],
+            };
         default:
             return state;
     }
